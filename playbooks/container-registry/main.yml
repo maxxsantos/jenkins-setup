@@ -1,0 +1,10 @@
+- hosts: registry
+  become: true
+  pre_tasks:
+  - name: 'Update dependencies'
+    raw: 'apt-get update'
+    changed_when: False
+  roles:
+    - { role: install_docker }
+    - { role: deploy_registry }
+    

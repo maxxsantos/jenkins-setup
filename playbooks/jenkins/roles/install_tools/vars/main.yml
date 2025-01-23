@@ -1,0 +1,10 @@
+---
+# vars file for install_tools
+dependencies:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - software-properties-common
+  - fontconfig
+  - openjdk-17-jre

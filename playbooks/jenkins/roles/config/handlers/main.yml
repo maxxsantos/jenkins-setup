@@ -1,0 +1,33 @@
+---
+# handlers file for config
+- name: Create script for admin user configuration
+  copy:
+    dest: /var/lib/jenkins/init.groovy.d/admin-user.groovy
+    content: |
+      import jenkins.model.*
+      import hudson.security.*
+
+      def instance = Jenkins.getInstance()
+      def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+      hudsonRealm.createAccount("admin", "rdcenter")
+      instance.setSecurityRealm(hudsonRealm)
+
+      def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+      strategy.setAllowAnonymousRead(false)
+      instance.setAuthorizationStrategy(strategy)
+
+      // Salvar alterações
+      instance.save()
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
+
+- name: Restart the Jenkins service
+  service:
+    name: jenkins
+    state: restarted
+
+- name: Restart the Docker service
+  service:
+    name: docker
+    state: restarted

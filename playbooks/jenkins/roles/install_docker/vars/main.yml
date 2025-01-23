@@ -1,0 +1,8 @@
+---
+# vars file for install_docker
+docker_tools:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin

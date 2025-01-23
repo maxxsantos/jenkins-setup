@@ -1,0 +1,25 @@
+---
+# tasks file for config
+- name: Criar diretório para scripts Groovy
+  file:
+    path: /var/lib/jenkins/init.groovy.d
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+  notify: Create script for admin user configuration
+
+- name: Add Jenkins's user to Docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: true
+  notify: Restart the Jenkins service
+
+- name: Configuring docker-registry
+  lineinfile:
+    path: /etc/docker/daemon.json
+    line: '{"insecure-registries": ["192.168.56.11:5000"]}'
+    create: yes
+    state: present
+  notify: Restart the Docker service

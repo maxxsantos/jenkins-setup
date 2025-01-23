@@ -1,0 +1,29 @@
+---
+# tasks file for deploy_registry
+- name: Create folders
+  file:
+    path: "/opt/registry/{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - data
+    - config
+    - auth
+
+- name: Create file htpasswd with basic authentication
+  shell: |
+    docker run --entrypoint htpasswd httpd:2 -Bbn admin rdcenter > /opt/registry/auth/htpasswd
+
+- name: Create file docker-compose.yml using template
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/registry/docker-compose.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Up services with docker-compose
+  shell: |
+    docker compose up -d
+  args:
+    chdir: /opt/registry

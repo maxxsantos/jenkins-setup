@@ -1,0 +1,12 @@
+- hosts: jenkins
+  become: true
+  pre_tasks:
+  - name: 'Update dependencies'
+    raw: 'apt-get update'
+    changed_when: False
+  roles:
+    - { role: install_tools }
+    - { role: install_docker }
+    - { role: install_jenkins }
+    - { role: config }
+    

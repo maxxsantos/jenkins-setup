@@ -1,0 +1,12 @@
+---
+# tasks file for install_tools
+- name: 'Install VIM'
+  apt:
+    name: "vim"
+    state: present
+
+- name: 'Install Dependencies'
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ dependencies }}"
